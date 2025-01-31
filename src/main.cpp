@@ -1,19 +1,13 @@
-#include "core/unitTester/unitTester.hpp"
+#include "unitTester.hpp"
+#include <iostream>
+#include <unistd.h>
 
-int add(int x, int y) { return x + y; }
-
-std::string toLower(std::string str) {
-  for (char &ch : str) {
-    if (ch >= 'A' && ch <= 'Z')
-      ch += 32;
-  }
-  return str;
-}
+int test() { return 1; }
 
 int main(int argc, char *argv[]) {
 
-  UTester::UTest<int>(6, "Adds 2+3 == 5", add(2, 3));
-  UTester::UTest<int>(99, "Adds 77+22 == 99", add(77, 22));
-  UTester::UTest<std::string>("aab", "Turns AAb to aab", toLower("AAb"));
+  UTester::UTest<int>(0, "Returns void", test());
+
+  UTester::UTest<int>(0, "Returns void", test());
   return 0;
 }

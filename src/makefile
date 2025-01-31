@@ -1,20 +1,24 @@
-CFLAGS =
-INCLUDES = core/unitTester/unitTester.hpp
+CFLAGS = -fimplicit-constexpr -std=c++20
+INCLUDES := $(shell find . -name '*.cpp')
+OBJ := $(patsubst %.cpp,%.o,$(INCLUDES))
 DEBUG = -g -Wall -Wextra -pedantic
+OUT = ./bin/main
 
-% : %.cpp
-	g++ $(CFLAGS) $(INCLUDES) -o $@ $<
+%.o: %.cpp 
+	g++ $(CFLAGS) -c $< -o $@  	
+	@echo "Compiled:" $@
 
-run:
+run: $(OBJ)
 	@echo "Compiling..."
-	g++ $(CFLAGS) $(INCLUDES) -o main main.cpp
-	@cls
-	@./main.exe
+	g++ $(CFLAGS) $(OBJ) -o $(OUT) 
+	@$(OUT)
 
-debug:
+debug: 
 	@echo "Compiling..."
-	g++ $(DEBUG) $(CFLAGS) $(INCLUDES) -o main main.cpp
+	g++ $(DEBUG) $(CFLAGS) $(INCLUDES) -o $(OUT)d
 
 clean:
 	@echo "Deleting..."
-	@rm main
+	@rm $(OBJ)
+	@rm $(OUT)
+	@rm $(OUT)d
