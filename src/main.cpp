@@ -1,13 +1,15 @@
-#include "unitTester.hpp"
-#include <iostream>
-#include <unistd.h>
+#include "uTester.h"
+#include <numeric>
+#include <vector>
 
-int test() { return 1; }
+int test() {
+  std::vector<int> arr = {1, 2, 3, 4, 5};
+  return std::accumulate(arr.begin(), arr.end(), 0);
+}
 
 int main(int argc, char *argv[]) {
 
-  UTester::UTest<int>(0, "Returns void", test());
-
-  UTester::UTest<int>(0, "Returns void", test());
+  UTester::TestStatus status;
+  status.newTest(12, test());
   return 0;
 }

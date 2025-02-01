@@ -1,27 +1,23 @@
 #pragma once
-
+#include <fstream>
 #include <iostream>
 namespace UTester {
 
-#define REDTEXT(x) "\33[34m" + x + "\33[0m"
-#define GREENTEXT(x) "\33[32m" + x + "\33[0m"
-template <class T> class TestStatus {
+#define REDTEXT(str) "\33[31m" << str << "\33[0m"
+#define GREENTEXT(str) "\33[32m" << str << "\33[0m"
+class TestStatus {
 public:
-  TestStatus() noexcept { std::cout << "Test diagnostic:\n"; }
-  ~TestStatus() noexcept {
-    std::cout << "Tests: " << _numberOfPasses << " of " << _numberOfTests
-              << " passed\n";
-  }
+  TestStatus() noexcept;
+  ~TestStatus() noexcept;
 
 private:
-  template <class function, class... args> struct Test {
+  template <typename T> struct Test {
   public:
     Test() = delete;
-    Test(T expectedResult, function fn, args... arguments)
-        : m_functionOutput(fn(arguments...)) {
+    Test(T expectedResult, T result) : m_functionOutput(result) {
       m_testPass = _testResult(expectedResult);
     };
-    ~Test();
+    ~Test() = default;
 
     bool m_testPass;
     T m_functionOutput;
@@ -31,6 +27,21 @@ private:
       return m_functionOutput == expectedResult;
     };
   };
+
+public:
+  template <typename T> void newTest(T expectedResult, T result) {
+    Test<T> newTest(expectedResult, result);
+    if (newTest.m_testPass)
+      std::cout << GREENTEXT("PASSED") << '\n';
+    else
+      std::cout << REDTEXT("FAILED") << '\n';
+    // writeResultsToFile(expectedResult, result);
+  }
+  template <typename T> void writeResultsToFile(T expectedResult, T result) {
+    std::ofstream writer("Test " + std::to_string(_numberOfTests) + ".md");
+
+    writer.close();
+  }
 
 private:
   int _numberOfTests = 0;
