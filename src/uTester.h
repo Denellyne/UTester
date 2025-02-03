@@ -1,6 +1,11 @@
 #pragma once
 #include <fstream>
 #include <iostream>
+
+void *operator new(size_t size);
+
+void operator delete(void *ptr) throw();
+
 namespace UTester {
 
 #define REDTEXT(str) "\33[31m" << str << "\33[0m"
@@ -12,43 +17,65 @@ public:
 
 private:
   template <typename T> struct Test {
-  public:
     Test() = delete;
-    Test(T expectedResult, T result) : m_functionOutput(result) {
-      m_testPass = _testResult(expectedResult);
-    };
-    ~Test() = default;
+    Test(T expectedResult, T result)
+        : m_testPass(expectedResult == result), expectedResult(expectedResult),
+          result(result) {};
+
+    ~Test() {
+      std::cout << "Test " << TestStatus::_numberOfTests << ':';
+      if (m_testPass)
+        std::cout << GREENTEXT(" PASSED") << '\n';
+      else {
+
+        std::cout << REDTEXT(" FAILED") << '\n';
+        std::cout << "  Expected result: " << expectedResult << '\n';
+        std::cout << "  Result: " << result << '\n';
+      }
+
+      // writeResultsToFile(expectedResult, result);
+    }
 
     bool m_testPass;
-    T m_functionOutput;
 
   private:
-    bool _testResult(T expectedResult) {
-      return m_functionOutput == expectedResult;
-    };
+    void writeResultsToFile(T expectedResult, T result) {
+      std::ofstream writer("Test " +
+                           std::to_string(TestStatus::_numberOfTests) + ".md");
+
+      writer << "# Test " << TestStatus::_numberOfTests << "\n\n";
+
+      writer.close();
+    }
+    T expectedResult;
+    T result;
   };
 
 public:
   template <typename T> void newTest(T expectedResult, T result) {
     Test<T> newTest(expectedResult, result);
-    if (newTest.m_testPass)
-      std::cout << GREENTEXT("PASSED") << '\n';
-    else
-      std::cout << REDTEXT("FAILED") << '\n';
-    // writeResultsToFile(expectedResult, result);
-  }
-  template <typename T> void writeResultsToFile(T expectedResult, T result) {
-    std::ofstream writer("Test " + std::to_string(_numberOfTests) + ".md");
+    _numberOfTests++;
 
-    writer.close();
+    if (newTest.m_testPass)
+      _numberOfPasses++;
+  }
+
+  static inline void updateMemoryAllocations(int size, bool isAllocating) {
+    if (!isAllocating) {
+      _totalMemoryLeaked -= size;
+      return;
+    }
+    _totalMemoryAllocations++;
+    _totalMemoryAllocated += size;
+    _totalMemoryLeaked += size;
   }
 
 private:
-  int _numberOfTests = 0;
-  int _numberOfPasses = 0;
-  unsigned _totalMemoryAllocations = 0;
-  unsigned _totalMemoryAllocated = 0;
-  unsigned _totalMemoryLeaked = 0;
+  static inline unsigned _numberOfTests = 0;
+  static inline unsigned _numberOfPasses = 0;
+  static inline unsigned _totalMemoryAllocations = 0;
+  static inline unsigned _totalMemoryAllocated = 0;
+  static inline unsigned _totalMemoryLeaked = 0;
 };
 
 }; // namespace UTester

@@ -1,10 +1,12 @@
 #include "uTester.h"
-#include <numeric>
-#include <vector>
 
 int test() {
-  std::vector<int> arr = {1, 2, 3, 4, 5};
-  return std::accumulate(arr.begin(), arr.end(), 0);
+  for (int i = 0; i < 10; i++) {
+
+    int *x = new int;
+    delete x;
+  }
+  return 15;
 }
 
 int main(int argc, char *argv[]) {
