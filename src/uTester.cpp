@@ -1,6 +1,7 @@
 #include "uTester.h"
 
-UTester::TestStatus::TestStatus() noexcept {
+UTester::TestStatus::TestStatus(bool writeToFile) noexcept
+    : writeToFile(writeToFile) {
   std::cout << "Test diagnostic:\n";
 }
 UTester::TestStatus::~TestStatus() noexcept {

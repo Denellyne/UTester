@@ -3,7 +3,7 @@ INCLUDES := $(shell find . -name '*.cpp')
 OBJ := $(patsubst %.cpp,%.o,$(INCLUDES))
 TEST := *.md
 DEBUG = -g -Wall -Wextra -pedantic
-OUT = ./bin/main
+OUT = ../bin/main
 
 %.o: %.cpp 
 	@echo "Compiling..."
