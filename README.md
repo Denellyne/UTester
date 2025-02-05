@@ -1,11 +1,9 @@
 # UTester
 
-## Automated testing library 
+##### Automated testing library 
 
-### Create a UTest object
+### Create a TestStatus Object and then add new tests to it
 
-#### Pass the expected output, description of the test and the function you wish to test
+![WhatsApp Image 2025-02-03 at 15 59 45 (1)](https://github.com/user-attachments/assets/f435c7a8-6b2b-48b1-8500-3093d6708cf0)
 
-![Source](https://github.com/user-attachments/assets/fe063995-2cb2-43c2-8c04-ce43fb06213d)
-
-![Result](https://github.com/user-attachments/assets/6e750d84-173c-4452-89d6-d4028cbdebca)
+![montagem final](https://github.com/user-attachments/assets/afa20ced-5970-4865-bab7-018bc64ea830)
