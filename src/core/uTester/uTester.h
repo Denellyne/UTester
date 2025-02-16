@@ -1,10 +1,7 @@
 #pragma once
+#include "../memTracer/memTracer.h"
 #include <fstream>
 #include <iostream>
-
-void *operator new(size_t size);
-
-void operator delete(void *ptr) throw();
 
 namespace UTester {
 
@@ -13,6 +10,7 @@ namespace UTester {
 
 class TestStatus {
 public:
+  TestStatus() = delete;
   TestStatus(bool writeToFile) noexcept;
   ~TestStatus() noexcept;
 
@@ -63,24 +61,11 @@ public:
       _numberOfPasses++;
   }
 
-  static inline void updateMemoryAllocations(int size, bool isAllocating) {
-    if (!isAllocating) {
-      _totalMemoryLeaked -= size;
-      return;
-    }
-    _totalMemoryAllocations++;
-    _totalMemoryAllocated += size;
-    _totalMemoryLeaked += size;
-  }
-
 private:
-  bool writeToFile;
+  bool writeToFile = false;
 
   static inline unsigned _numberOfTests = 0;
   static inline unsigned _numberOfPasses = 0;
-  static inline unsigned _totalMemoryAllocations = 0;
-  static inline unsigned _totalMemoryAllocated = 0;
-  static inline unsigned _totalMemoryLeaked = 0;
 };
 
 }; // namespace UTester
