@@ -2,8 +2,9 @@ CFLAGS = -fimplicit-constexpr -std=c++20
 INCLUDES := $(shell find . -name '*.cpp')
 OBJ := $(patsubst %.cpp,%.o,$(INCLUDES))
 TEST := *.md
-DEBUG = -g -Wall -Wextra -pedantic
+DEBUG = -g -finstrument-functions -Wall -Wextra -pedantic
 OUT = ../bin/main
+CORES = ./cores/core.*
 
 %.o: %.cpp 
 	@echo "Compiling..."
@@ -21,6 +22,4 @@ debug:
 
 clean:
 	@echo "Deleting..."
-	@rm $(OBJ)
-	@rm $(OUT)
-	@rm $(TEST)
+	@rm -f $(OBJ) $(OUT) $(TEST) $(CORES)

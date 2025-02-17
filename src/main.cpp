@@ -1,3 +1,4 @@
+#include "core/stackTracer/stackTracer.h"
 #include "core/uTester/uTester.h"
 
 class cpu {
@@ -29,5 +30,6 @@ int main(int argc, char *argv[]) {
   UTester::TestStatus Status(true);
   Status.newTest(3, cpu.functionBeingTested());
   Status.newTest(1, cpu.functionBeingTested());
+
   return 0;
 }
