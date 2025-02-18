@@ -20,6 +20,11 @@ debug:
 	@echo "Compiling..."
 	g++ $(DEBUG) $(CFLAGS) $(INCLUDES) -o $(OUT)
 
+dr:
+	@echo "Compiling..."
+	g++ $(DEBUG) $(CFLAGS) $(INCLUDES) -o $(OUT)
+	@$(OUT)
+
 clean:
 	@echo "Deleting..."
 	@rm -f $(OBJ) $(OUT) $(TEST) $(CORES)

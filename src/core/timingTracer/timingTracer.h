@@ -8,9 +8,8 @@ namespace uTester {
 
 class timingTracer {
 public:
-  timingTracer() { std::cout << "constructed\n"; }
-  void a(uintptr_t ptr) { map[ptr].start(); }
-  void b(uintptr_t ptr) { map[ptr].stop(); }
+  void startTimer(uintptr_t ptr);
+  void stopTimer(uintptr_t ptr);
 
 private:
   struct functionTimer {
@@ -19,11 +18,11 @@ private:
         return;
       std::cout << timeSpent / calls << '\n';
     }
-    void start() {
+    void __attribute__((no_instrument_function)) start() {
       calls++;
       startTimepoint = std::chrono::high_resolution_clock::now();
     }
-    void stop() {
+    void __attribute__((no_instrument_function)) stop() {
       endTimePoint = std::chrono::high_resolution_clock::now();
 
       auto start =

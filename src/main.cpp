@@ -1,4 +1,3 @@
-#include "core/stackTracer/stackTracer.h"
 #include "core/uTester/uTester.h"
 
 class cpu {
